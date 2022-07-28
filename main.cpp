@@ -35,9 +35,9 @@ int main(int argc, char** argv) {
 			printf("%zu, %lf\n", n, mili);
 		}
 	} else if (argv[argc - 1][0] == 'e') {
-		// 流石に遅すぎるので 100 刻みで計測
-		for (size_t n = 100; n <= 1000; n += 100) {
-			matrix_t a = make_random_matrix(n);
+		// 流石に遅すぎるので範囲を狭めている
+		for (size_t n = 10; n <= 30; n += 5) {
+			matrix_t a = make_random_matrix(n, true);
 
 			auto start = std::chrono::system_clock::now();
 			for (size_t i = 0; i < ATTEMPT; ++i) {

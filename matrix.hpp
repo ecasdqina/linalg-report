@@ -8,7 +8,7 @@
 #include <cmath>
 #include <random>
 
-constexpr double EPS = 1e-12;
+constexpr double EPS = 1e-3;
 
 bool doublecomp(double x, double y = 0) {
 	return std::abs(x - y) <= EPS;
@@ -281,23 +281,32 @@ struct matrix_t {
 			for (size_t i = 0; i < n; ++i) {
 				printf(i == 0 ? "[[" : " [");
 				for (size_t j = 0; j < n; ++j) {
-					printf("%lf%s", a[i * n + j], (j + 1 == n ? "]\n" : " "));
+					printf("%lf%s", a[i * n + j], (j + 1 == n ? "]" : " "));
 				}
+				puts("]");
 				fflush(stdout);
 			}
 		}
 	}
 };
 
-matrix_t make_random_matrix(size_t n, bool regular = true) {
+matrix_t make_random_matrix(size_t n, bool symmetric = false, bool regular = true) {
 	std::random_device seed_gen;
 	std::default_random_engine engine(seed_gen());
-	std::uniform_real_distribution<> dist(-1.0, 1.0);
+	std::uniform_real_distribution<> dist(0, 1.0);
 
 	matrix_t a(n);
 	do {
 		for (size_t i = 0; i < n * n; ++i) a[i] = dist(engine);
 	} while (regular and doublecomp(a.determinant()));
+
+	if (symmetric) {
+		for (size_t i = 0; i < n; ++i) {
+			for (size_t j = 0; j < i; ++j) {
+				a[i * n + j] = a[j * n + i];
+			}
+		}
+	}
 	return a;
 }
 
