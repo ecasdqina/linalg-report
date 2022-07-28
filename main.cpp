@@ -31,8 +31,15 @@ int main(int argc, char** argv) {
 			}
 			auto end = std::chrono::system_clock::now();
 
-			double mili = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-			printf("%zu, %lf\n", n, mili);
+			// 誤差評価
+			std::vector<double> x = a.inverse() * b; // 逆行列で解く
+//			std::vector<double> x = a.linsolve_lu(b); // LU 分解で解く。
+
+			double eps = 0; // 二乗和誤差
+			for (size_t i = 0; i < n; ++i) eps += (x[i] - b[i]) * (x[i] - b[i]);
+
+			size_t mili = (size_t)std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+			printf("%zu, %zu %.12lf\n", n, mili, eps);
 		}
 	} else if (argv[argc - 1][0] == 'e') {
 		for (size_t n = 10; n <= 100; n += 10) {
@@ -50,8 +57,13 @@ int main(int argc, char** argv) {
 			}
 			auto end = std::chrono::system_clock::now();
 
-			double mili = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-			printf("%zu, %lf\n", n, mili);
+			// トレースと固有値の総和の誤差
+			auto x = a.lutishauser();
+			double eps = std::accumulate(x.begin(), x.end(), 0.);
+			for (size_t i = 0; i < n; ++i) eps -= a[i * n + i];
+
+			size_t mili = (size_t)std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+			printf("%zu, %zu %.12lf\n", n, mili, eps);
 		}
 	}
 	return 0;
