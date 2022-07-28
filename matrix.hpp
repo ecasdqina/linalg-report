@@ -192,8 +192,10 @@ struct matrix_t {
 	}
 	// LU 法
 	std::vector<double> lutishauser() const {
+		size_t iter = 0;
+
 		matrix_t x(*this);
-		while (!x.is_upper_trimatrix()) {
+		while (!x.is_upper_trimatrix() and ++iter < 100) {
 			auto [l, u] = x.lu_decomposition();
 
 			x = u * l;
@@ -229,8 +231,9 @@ struct matrix_t {
 		matrix_t b(*this);
 		for (size_t i = 0; i < n; ++i) b[i * n + i] -= ev;
 
+		size_t iter = 0;
 		std::vector<double> x(n, 1. / sqrt((double)n)), y(n);
-		while (true) {
+		while (++iter < 100) {
 			y = b.linsolve_lu(x);
 			x.swap(y);
 			normalize(x);
