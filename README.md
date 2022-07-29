@@ -25,3 +25,12 @@ g++ main.cpp
 ./a.out l
 ./a.out e
 ```
+
+## グラフ生成
+
+```bash
+./a.out d > det.dat
+./a.out l > lin.dat
+./a.out e > eig.dat
+python3 graph.py
+```

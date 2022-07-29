@@ -11,7 +11,7 @@ def load(filename: str):
 
             xs.append(int(buf[0]))
             ys.append(int(buf[1]))
-            zs.append(int(buf[2]) if len(buf) == 3 else -1)
+            zs.append(float(buf[2]) if len(buf) == 3 else -1)
     return xs, ys, zs
 
 
@@ -26,8 +26,6 @@ def plot(title, xlabel, ylabel, xs, ys):
 def main() -> NoReturn:
     xs, ys, zs = load("det.dat")
     plot("Det_NT", "Matrix size", "Elapsed time[ms]", xs, ys)
-
-    return
 
     xs, ys, zs = load("lin.dat")
     plot("Lin_NT", "Matrix size", "Elapsed time[ms]", xs, ys)
