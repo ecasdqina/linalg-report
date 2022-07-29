@@ -16,8 +16,8 @@ int main(int argc, char** argv) {
 			}
 			auto end = std::chrono::system_clock::now();
 
-			double mili = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-			printf("%zu, %lf\n", n, mili);
+			size_t mili = (size_t)std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+			printf("%zu, %zu\n", n, mili);
 		}
 	} else if (argv[argc - 1][0] == 'l') {
 		for (size_t n = 100; n <= 1000; ++n) {
@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 			for (size_t i = 0; i < n; ++i) eps += (y[i] - b[i]) * (y[i] - b[i]);
 
 			size_t mili = (size_t)std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-			printf("%zu, %zu %.12lf\n", n, mili, eps);
+			printf("%zu, %zu, %.12lf\n", n, mili, eps);
 		}
 	} else if (argv[argc - 1][0] == 'e') {
 		for (size_t n = 10; n <= 100; n += 10) {
@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
 			for (size_t i = 0; i < n; ++i) eps -= a[i * n + i];
 
 			size_t mili = (size_t)std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-			printf("%zu, %zu %.12lf\n", n, mili, eps);
+			printf("%zu, %zu, %.12lf\n", n, mili, eps);
 		}
 	}
 	return 0;
