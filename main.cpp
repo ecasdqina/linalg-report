@@ -6,7 +6,27 @@
 #define ATTEMPT 1
 
 int main(int argc, char** argv) {
-	if (argv[argc - 1][0] == 'd') {
+	if (argc == 1) {
+		matrix_t a({{3, 2, 1}, {4, 2, 5}, {1, 4, 6}});
+		printf("Det = %lf\n", a.determinant()); // actual = -48
+
+		matrix_t b({{3, -1, 2}, {-1, 5, -3}, {1, -1, 3}});
+		auto x = b.linsolve_lu({-7, 35, -19});
+		printf("x = [%lf, %lf, %lf]\n", x[0], x[1], x[2]);
+
+		matrix_t c({{3, -1, 2}, {-1, 5, -3}, {1, -1, 3}});
+		auto t = c.lutishauser();
+		printf("e = [%lf, %lf, %lf]\n", t[0], t[1], t[2]);
+
+		auto y = c.inviter(t[0]);
+		printf("%lf: [%lf, %lf, %lf]\n", t[0], y[0], y[1], y[2]);
+
+		y = c.inviter(t[1]);
+		printf("%lf: [%lf, %lf, %lf]\n", t[1], y[0], y[1], y[2]);
+
+		y = c.inviter(t[2]);
+		printf("%lf: [%lf, %lf, %lf]\n", t[2], y[0], y[1], y[2]);
+	} else if (argv[argc - 1][0] == 'd') {
 		for (size_t n = 100; n <= 1000; ++n) {
 			matrix_t a = make_random_matrix(n);
 
